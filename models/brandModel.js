@@ -22,7 +22,7 @@ const brandSchema = new mongoose.Schema(
 // middleware for making image URL
 const setImageUrl = (doc) => {
   if (doc.image) {
-    const imageUrl = `${process.env.BASE_Url}/brands/${doc.image}`;
+    const imageUrl = `https://e-commerce-node-5e796e6e3b82.herokuapp.com/brands/${doc.image}`;
 
     doc.image = imageUrl;
   }
