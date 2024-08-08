@@ -129,7 +129,7 @@ res.status(200).json({status:"success",data:session})
 
 
   const createCardOrder= async (session)=>{
-    const cardId=sessions.client_reference_id
+    const cardId=session.client_reference_id
     const shippingAddress=session.metadata
     const orderPrice=session.total /100
 const cart= await cartModel.findById(cardId)
