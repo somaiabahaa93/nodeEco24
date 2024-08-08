@@ -7,6 +7,7 @@ const orderModel = require("../models/orderModel");
 const productModel = require("../models/productModel");
 const OrderModel = require("../models/orderModel");
 const factory = require("../utils/handlerFactory");
+const UserModel = require('../models/userModel');
 
 
 
@@ -125,6 +126,42 @@ exports.updateOrderDeliver=asyncHandler(async(req,res,next)=>{
 res.status(200).json({status:"success",data:session})
   })
 
+
+
+  const createCardOrder= async (session)=>{
+    const cardId=sessions.client_reference_id
+    const shippingAddress=session.metadata
+    const orderPrice=sessions.amount_total /100
+const cart= await cartModel.findById(cardId)
+const user= await UserModel.findOne({email:session.customer_email})
+
+// create order
+const order = await orderModel.create({
+  user: user._id,
+  cartItems: cart.cartItems,
+  totalOrderPrice:orderPrice,
+  shippingAddress,
+  isPaid:true,
+  paidAt:Date.now(),
+  PaymentMethodType:'card'
+});
+
+if (order) {
+  const bulkOption = cart.cartItems.map((item) => ({
+    updateOne: {
+      filter: { _id: item.product },
+      update: { $inc: { quantity: -item.quantity, sold: +item.quantity } },
+    },
+  }));
+  await productModel.bulkWrite(bulkOption, {});
+  // 5-clear cart
+
+  await cartModel.findByIdAndDelete(cardId);
+}
+
+
+  }
+
   exports.webhookCheckout=asyncHandler(async(req,res,next)=>{
     const sig = request.headers['stripe-signature'];
 
@@ -140,6 +177,10 @@ res.status(200).json({status:"success",data:session})
     if(event.type==='checkout.session.completed')
       {
         console.log("make order nowwww>>>>>>>>>>>>>>>heroku")
+        createCardOrder(event.data.object)
       }
+
+      res.status(200).json({ recived: true, message: "success" });
+
 
   })
