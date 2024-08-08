@@ -129,11 +129,11 @@ res.status(200).json({status:"success",data:session})
 
 
   const createCardOrder= async (session)=>{
-    const cardId=session.client_reference_id
-    const shippingAddress=session.metadata
-    const orderPrice=session.total /100
+    const cardId = session.client_reference_id
+    const shippingAddress = session.metadata
+    const orderPrice = session.amount / 100
 const cart= await cartModel.findById(cardId)
-const user= await UserModel.findOne({email:session.customer_email})
+const user= await UserModel.findOne({email: session.customer_email})
 
 // create order
 const order = await orderModel.create({
@@ -163,7 +163,7 @@ if (order) {
   }
 
   exports.webhookCheckout=asyncHandler(async(req,res,next)=>{
-    const sig = request.headers['stripe-signature'];
+    const sig = req.headers['stripe-signature'].toString();;
 
     let event;
   
@@ -182,5 +182,6 @@ if (order) {
 
       res.status(200).json({ recived: true, message: "success" });
 
+      
 
   })
