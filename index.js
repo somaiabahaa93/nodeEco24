@@ -33,7 +33,13 @@ app.options('*', cors());
 app.use(compression());
 
 // webhook checkout
-app.post('/webhook', express.raw({type: 'application/json'}),webhookCheckout)
+// app.post('/webhook', express.raw({type: 'application/json'}),webhookCheckout)
+app.post(
+  '/webhook-checkout',
+  // express.raw({ type: 'application/json' }),
+  bodyParser.raw({ type: 'application/json' }),
+  webhookCheckout
+);
 
 
 // connect to db
