@@ -40,7 +40,7 @@ app.post(
   bodyParser.raw({ type: 'application/json' }),
   webhookCheckout
 );
-
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 // connect to db
 dbConnection();
