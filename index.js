@@ -28,6 +28,8 @@ const globalError = require("./middelwares/errorMiddleware");
 const { webhookCheckout } = require("./services/orderService");
 // express app
 const app = express();
+app.get('/favicon.ico', (req, res) => res.status(204));
+
 app.use(cors());
 app.options('*', cors());
 app.use(compression());
@@ -40,7 +42,6 @@ app.post(
   bodyParser.raw({ type: 'application/json' }),
   webhookCheckout
 );
-app.get('/favicon.ico', (req, res) => res.status(204));
 
 // connect to db
 dbConnection();
