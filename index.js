@@ -38,8 +38,8 @@ app.use(compression());
 // app.post('/webhook', express.raw({type: 'application/json'}),webhookCheckout)
 app.post(
   '/webhook-checkout',
-  // express.raw({ type: 'application/json' }),
-  bodyParser.raw({ type: 'application/json' }),
+  express.raw({ type: 'application/json' }),
+  // bodyParser.raw({ type: 'application/json' }),
   webhookCheckout
 );
 
