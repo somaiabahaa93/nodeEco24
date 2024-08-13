@@ -131,7 +131,7 @@ res.status(200).json({status:"success",data:session})
   const createCardOrder= async (session)=>{
     const cardId = session.client_reference_id
     const shippingAddress = session.metadata
-    const orderPrice = session.amount / 100
+    const orderPrice = (session.amount_total / 100 ) || 500
 const cart= await cartModel.findById(cardId)
 const user= await UserModel.findOne({email: session.customer_email})
 
