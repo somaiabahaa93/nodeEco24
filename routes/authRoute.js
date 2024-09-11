@@ -27,9 +27,9 @@ router.put("/verifyResetPassword", verifyResetPassword);
 
 // frontEndProject
 router
-  .route("/frontEndSignup")
-  // .get(getUserValidator, getUsers)
-  .post(frontEndSignUp);
+  // .route("/frontEndSignup")
+  // // .get(getUserValidator, getUsers)
+  .post("/frontEndSignup",frontEndSignUp);
 router.post("/frontEndLogin", frontEndlLogin);
 
 module.exports = router;
